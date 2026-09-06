@@ -25,12 +25,12 @@ config["max_debate_rounds"] = 1
 # variables so we can change models later without rewriting code.
 config["deep_think_llm"] = os.getenv(
     "TRADINGAGENTS_DEEP_THINK_LLM",
-    "gemini-2.5-flash"
+    "gemini-3.6-flash"
 )
 
 config["quick_think_llm"] = os.getenv(
     "TRADINGAGENTS_QUICK_THINK_LLM",
-    "gemini-2.5-flash"
+    "gemini-3.6-flash"
 )
 
 
