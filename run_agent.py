@@ -10,26 +10,33 @@ from tradingagents.default_config import DEFAULT_CONFIG
 # CONFIGURATION
 # ============================================================
 
-# Groq API key is supplied by GitHub Actions.
+# Cerebras API key is supplied by GitHub Actions.
 # Never hard-code the API key in this file.
-os.environ["GROQ_API_KEY"] = os.environ["SECRET_GROQ_KEY"]
+os.environ["OPENAI_COMPATIBLE_API_KEY"] = os.environ[
+    "SECRET_CEREBRAS_KEY"
+]
 
-# Use Groq as the LLM provider.
+# Use Cerebras through TradingAgents' generic
+# OpenAI-compatible provider.
 config = DEFAULT_CONFIG.copy()
 
-config["llm_provider"] = "groq"
+config["llm_provider"] = "openai_compatible"
+
+# Cerebras OpenAI-compatible endpoint.
+config["backend_url"] = "https://api.cerebras.ai/v1"
 
 # Keep the first automated test lightweight.
 config["max_debate_rounds"] = 1
 
+# Cerebras GPT-OSS 120B.
 config["deep_think_llm"] = os.getenv(
     "TRADINGAGENTS_DEEP_THINK_LLM",
-    "groq/compound"
+    "gpt-oss-120b"
 )
 
 config["quick_think_llm"] = os.getenv(
     "TRADINGAGENTS_QUICK_THINK_LLM",
-    "groq/compound"
+    "gpt-oss-120b"
 )
 
 
@@ -47,6 +54,7 @@ print("=" * 70)
 print(f"Ticker:         {TICKER}")
 print(f"Analysis date:  {analysis_date}")
 print(f"LLM provider:   {config['llm_provider']}")
+print(f"Backend URL:    {config['backend_url']}")
 print(f"Deep model:     {config['deep_think_llm']}")
 print(f"Quick model:    {config['quick_think_llm']}")
 print("=" * 70)
