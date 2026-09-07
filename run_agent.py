@@ -10,26 +10,26 @@ from tradingagents.default_config import DEFAULT_CONFIG
 # CONFIGURATION
 # ============================================================
 
-# Gemini API key is supplied by GitHub Actions.
-# Never hard-code API keys in this file.
-os.environ["GOOGLE_API_KEY"] = os.environ["SECRET_GOOGLE_KEY"]
+# Groq API key is supplied by GitHub Actions.
+# Never hard-code the API key in this file.
+os.environ["GROQ_API_KEY"] = os.environ["SECRET_GROQ_KEY"]
 
-# Use Google/Gemini as the LLM provider.
+# Use Groq as the LLM provider.
 config = DEFAULT_CONFIG.copy()
 
-config["llm_provider"] = "google"
+config["llm_provider"] = "groq"
 
 # Keep the first automated test lightweight.
 config["max_debate_rounds"] = 1
 
 config["deep_think_llm"] = os.getenv(
     "TRADINGAGENTS_DEEP_THINK_LLM",
-    "gemini-3.6-flash"
+    "openai/gpt-oss-120b"
 )
 
 config["quick_think_llm"] = os.getenv(
     "TRADINGAGENTS_QUICK_THINK_LLM",
-    "gemini-3.6-flash"
+    "openai/gpt-oss-120b"
 )
 
 
