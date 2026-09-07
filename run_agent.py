@@ -24,12 +24,12 @@ config["max_debate_rounds"] = 1
 
 config["deep_think_llm"] = os.getenv(
     "TRADINGAGENTS_DEEP_THINK_LLM",
-    "openai/gpt-oss-120b"
+    "openai/gpt-oss-20b"
 )
 
 config["quick_think_llm"] = os.getenv(
     "TRADINGAGENTS_QUICK_THINK_LLM",
-    "openai/gpt-oss-120b"
+    "openai/gpt-oss-20b"
 )
 
 
