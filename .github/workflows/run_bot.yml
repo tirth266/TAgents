@@ -43,22 +43,28 @@ jobs:
           pip install .
 
       # ------------------------------------------------------
-      # 4. Run TradingAgents with Groq
+      # 4. Run TradingAgents with Cerebras
       # ------------------------------------------------------
       - name: Run TradingAgents
         env:
-          # Groq API key from GitHub Repository Secrets
-          GROQ_API_KEY: ${{ secrets.GROQ_API_KEY }}
-          SECRET_GROQ_KEY: ${{ secrets.GROQ_API_KEY }}
+          # Your GitHub Secret
+          CEREBRAS_API_KEY: ${{ secrets.CEREBRAS_API_KEY }}
 
-          # TradingAgents provider
-          TRADINGAGENTS_LLM_PROVIDER: groq
+          # TradingAgents generic OpenAI-compatible provider
+          OPENAI_COMPATIBLE_API_KEY: ${{ secrets.CEREBRAS_API_KEY }}
+          SECRET_CEREBRAS_KEY: ${{ secrets.CEREBRAS_API_KEY }}
 
-          # Groq model
-          TRADINGAGENTS_DEEP_THINK_LLM: groq/compound
-          TRADINGAGENTS_QUICK_THINK_LLM: groq/compound
+          # Provider
+          TRADINGAGENTS_LLM_PROVIDER: openai_compatible
 
-          # Keep the first automated test lightweight
+          # Cerebras OpenAI-compatible endpoint
+          TRADINGAGENTS_LLM_BACKEND_URL: https://api.cerebras.ai/v1
+
+          # Cerebras model
+          TRADINGAGENTS_DEEP_THINK_LLM: gpt-oss-120b
+          TRADINGAGENTS_QUICK_THINK_LLM: gpt-oss-120b
+
+          # Keep first automated test lightweight
           TRADINGAGENTS_MAX_DEBATE_ROUNDS: "1"
           TRADINGAGENTS_MAX_RISK_ROUNDS: "1"
 
