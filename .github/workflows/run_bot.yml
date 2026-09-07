@@ -5,7 +5,7 @@ on:
     # Run at the start of every hour (UTC)
     - cron: "0 * * * *"
 
-  # Allows us to manually test the bot
+  # Allows manual testing from GitHub Actions
   workflow_dispatch:
 
 permissions:
@@ -20,7 +20,7 @@ jobs:
 
     steps:
       # ------------------------------------------------------
-      # 1. Download our repository
+      # 1. Download repository
       # ------------------------------------------------------
       - name: Checkout repository
         uses: actions/checkout@v4
@@ -43,16 +43,22 @@ jobs:
           pip install .
 
       # ------------------------------------------------------
-      # 4. Run one AI market analysis
+      # 4. Run TradingAgents with Groq
       # ------------------------------------------------------
       - name: Run TradingAgents
         env:
-          GOOGLE_API_KEY: ${{ secrets.GOOGLE_API_KEY }}
-          SECRET_GOOGLE_KEY: ${{ secrets.GOOGLE_API_KEY }}
+          # Groq API key from GitHub Repository Secrets
+          GROQ_API_KEY: ${{ secrets.GROQ_API_KEY }}
+          SECRET_GROQ_KEY: ${{ secrets.GROQ_API_KEY }}
 
-          TRADINGAGENTS_LLM_PROVIDER: google
-          TRADINGAGENTS_DEEP_THINK_LLM: gemini-3.6-flash
-          TRADINGAGENTS_QUICK_THINK_LLM: gemini-3.6-flash
+          # TradingAgents provider
+          TRADINGAGENTS_LLM_PROVIDER: groq
+
+          # Groq model
+          TRADINGAGENTS_DEEP_THINK_LLM: openai/gpt-oss-120b
+          TRADINGAGENTS_QUICK_THINK_LLM: openai/gpt-oss-120b
+
+          # Keep the first automated test lightweight
           TRADINGAGENTS_MAX_DEBATE_ROUNDS: "1"
           TRADINGAGENTS_MAX_RISK_ROUNDS: "1"
 
