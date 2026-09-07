@@ -55,8 +55,8 @@ jobs:
           TRADINGAGENTS_LLM_PROVIDER: groq
 
           # Groq model
-          TRADINGAGENTS_DEEP_THINK_LLM: openai/gpt-oss-120b
-          TRADINGAGENTS_QUICK_THINK_LLM: openai/gpt-oss-120b
+          TRADINGAGENTS_DEEP_THINK_LLM: openai/gpt-oss-20b
+          TRADINGAGENTS_QUICK_THINK_LLM: openai/gpt-oss-20b
 
           # Keep the first automated test lightweight
           TRADINGAGENTS_MAX_DEBATE_ROUNDS: "1"
