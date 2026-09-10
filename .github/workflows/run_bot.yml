@@ -16,7 +16,7 @@ jobs:
     name: Run TradingAgents
     runs-on: ubuntu-latest
 
-    timeout-minutes: 20
+    timeout-minutes: 30
 
     steps:
 
@@ -47,33 +47,49 @@ jobs:
 
 
       # ------------------------------------------------------
-      # 4. Run TradingAgents with Google Gemini
+      # 4. Run TradingAgents
       # ------------------------------------------------------
       - name: Run TradingAgents
         env:
 
-          # --------------------------------------------------
-          # Google Gemini API key
-          # --------------------------------------------------
+          # ==================================================
+          # GEMINI
+          # ==================================================
           GOOGLE_API_KEY: ${{ secrets.GOOGLE_API_KEY }}
-          SECRET_GOOGLE_KEY: ${{ secrets.GOOGLE_API_KEY }}
 
-          # --------------------------------------------------
-          # TradingAgents provider
-          # --------------------------------------------------
-          TRADINGAGENTS_LLM_PROVIDER: google
 
-          # --------------------------------------------------
-          # Gemini models
-          # --------------------------------------------------
-          TRADINGAGENTS_DEEP_THINK_LLM: gemini-3.1-flash-lite
-          TRADINGAGENTS_QUICK_THINK_LLM: gemini-3.1-flash-lite
+          # ==================================================
+          # GROQ
+          # ==================================================
+          GROQ_API_KEY: ${{ secrets.GROQ_API_KEY }}
 
-          # --------------------------------------------------
-          # Lightweight first test
-          # --------------------------------------------------
+
+          # ==================================================
+          # NVIDIA NIM
+          # ==================================================
+          NVIDIA_API_KEY: ${{ secrets.NVIDIA_API_KEY }}
+
+
+          # ==================================================
+          # TRADINGAGENTS
+          # ==================================================
+
+          # The provider is selected dynamically by
+          # run_agent.py.
+          #
+          # Do NOT set TRADINGAGENTS_LLM_PROVIDER here,
+          # because run_agent.py switches:
+          #
+          # Gemini → Groq → NVIDIA
+
           TRADINGAGENTS_MAX_DEBATE_ROUNDS: "1"
           TRADINGAGENTS_MAX_RISK_ROUNDS: "1"
 
+          # Retry transient API errors a few times before
+          # the provider fallback logic takes over.
+          TRADINGAGENTS_LLM_MAX_RETRIES: "2"
+
+
         run: |
           python run_agent.py
+```
