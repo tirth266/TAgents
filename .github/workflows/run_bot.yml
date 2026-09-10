@@ -1,5 +1,7 @@
 name: TradingAgents Hourly Analysis
 
+run-name: TradingAgents Hourly Analysis
+
 on:
   schedule:
     # Run at the start of every hour (UTC)
@@ -74,22 +76,15 @@ jobs:
           # TRADINGAGENTS
           # ==================================================
 
-          # The provider is selected dynamically by
-          # run_agent.py.
-          #
-          # Do NOT set TRADINGAGENTS_LLM_PROVIDER here,
-          # because run_agent.py switches:
+          # Provider is selected dynamically by run_agent.py:
           #
           # Gemini → Groq → NVIDIA
 
           TRADINGAGENTS_MAX_DEBATE_ROUNDS: "1"
           TRADINGAGENTS_MAX_RISK_ROUNDS: "1"
 
-          # Retry transient API errors a few times before
-          # the provider fallback logic takes over.
+          # Retry transient API errors before fallback.
           TRADINGAGENTS_LLM_MAX_RETRIES: "2"
-
 
         run: |
           python run_agent.py
-```
