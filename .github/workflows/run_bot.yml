@@ -19,11 +19,13 @@ jobs:
     timeout-minutes: 20
 
     steps:
+
       # ------------------------------------------------------
       # 1. Download repository
       # ------------------------------------------------------
       - name: Checkout repository
         uses: actions/checkout@v4
+
 
       # ------------------------------------------------------
       # 2. Install Python
@@ -34,6 +36,7 @@ jobs:
           python-version: "3.12"
           cache: "pip"
 
+
       # ------------------------------------------------------
       # 3. Install TradingAgents
       # ------------------------------------------------------
@@ -42,29 +45,33 @@ jobs:
           python -m pip install --upgrade pip
           pip install .
 
+
       # ------------------------------------------------------
-      # 4. Run TradingAgents with Cerebras
+      # 4. Run TradingAgents with Google Gemini
       # ------------------------------------------------------
       - name: Run TradingAgents
         env:
-          # Your GitHub Secret
-          CEREBRAS_API_KEY: ${{ secrets.CEREBRAS_API_KEY }}
 
-          # TradingAgents generic OpenAI-compatible provider
-          OPENAI_COMPATIBLE_API_KEY: ${{ secrets.CEREBRAS_API_KEY }}
-          SECRET_CEREBRAS_KEY: ${{ secrets.CEREBRAS_API_KEY }}
+          # --------------------------------------------------
+          # Google Gemini API key
+          # --------------------------------------------------
+          GOOGLE_API_KEY: ${{ secrets.GOOGLE_API_KEY }}
+          SECRET_GOOGLE_KEY: ${{ secrets.GOOGLE_API_KEY }}
 
-          # Provider
-          TRADINGAGENTS_LLM_PROVIDER: openai_compatible
+          # --------------------------------------------------
+          # TradingAgents provider
+          # --------------------------------------------------
+          TRADINGAGENTS_LLM_PROVIDER: google
 
-          # Cerebras OpenAI-compatible endpoint
-          TRADINGAGENTS_LLM_BACKEND_URL: https://api.cerebras.ai/v1
+          # --------------------------------------------------
+          # Gemini models
+          # --------------------------------------------------
+          TRADINGAGENTS_DEEP_THINK_LLM: gemini-3.1-flash-lite
+          TRADINGAGENTS_QUICK_THINK_LLM: gemini-3.1-flash-lite
 
-          # Cerebras model
-          TRADINGAGENTS_DEEP_THINK_LLM: gpt-oss-120b
-          TRADINGAGENTS_QUICK_THINK_LLM: gpt-oss-120b
-
-          # Keep first automated test lightweight
+          # --------------------------------------------------
+          # Lightweight first test
+          # --------------------------------------------------
           TRADINGAGENTS_MAX_DEBATE_ROUNDS: "1"
           TRADINGAGENTS_MAX_RISK_ROUNDS: "1"
 
