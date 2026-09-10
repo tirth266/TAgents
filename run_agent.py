@@ -10,33 +10,27 @@ from tradingagents.default_config import DEFAULT_CONFIG
 # CONFIGURATION
 # ============================================================
 
-# Cerebras API key is supplied by GitHub Actions.
+# Google Gemini API key is supplied by GitHub Actions.
 # Never hard-code the API key in this file.
-os.environ["OPENAI_COMPATIBLE_API_KEY"] = os.environ[
-    "SECRET_CEREBRAS_KEY"
-]
+os.environ["GOOGLE_API_KEY"] = os.environ["SECRET_GOOGLE_KEY"]
 
-# Use Cerebras through TradingAgents' generic
-# OpenAI-compatible provider.
 config = DEFAULT_CONFIG.copy()
 
-config["llm_provider"] = "openai_compatible"
-
-# Cerebras OpenAI-compatible endpoint.
-config["backend_url"] = "https://api.cerebras.ai/v1"
+# Use Google Gemini
+config["llm_provider"] = "google"
 
 # Keep the first automated test lightweight.
 config["max_debate_rounds"] = 1
 
-# Cerebras GPT-OSS 120B.
+# Gemini 3.1 Flash-Lite
 config["deep_think_llm"] = os.getenv(
     "TRADINGAGENTS_DEEP_THINK_LLM",
-    "gpt-oss-120b"
+    "gemini-3.1-flash-lite"
 )
 
 config["quick_think_llm"] = os.getenv(
     "TRADINGAGENTS_QUICK_THINK_LLM",
-    "gpt-oss-120b"
+    "gemini-3.1-flash-lite"
 )
 
 
@@ -48,15 +42,17 @@ TICKER = "BTC-USD"
 
 analysis_date = datetime.now(timezone.utc).strftime("%Y-%m-%d")
 
+
 print("=" * 70)
 print("TRADINGAGENTS AUTOMATED MARKET ANALYSIS")
 print("=" * 70)
+
 print(f"Ticker:         {TICKER}")
 print(f"Analysis date:  {analysis_date}")
 print(f"LLM provider:   {config['llm_provider']}")
-print(f"Backend URL:    {config['backend_url']}")
 print(f"Deep model:     {config['deep_think_llm']}")
 print(f"Quick model:    {config['quick_think_llm']}")
+
 print("=" * 70)
 
 
@@ -99,7 +95,11 @@ print(decision)
 
 decision_text = str(decision).strip().upper()
 
-allowed_decisions = {"BUY", "SELL", "HOLD"}
+allowed_decisions = {
+    "BUY",
+    "SELL",
+    "HOLD"
+}
 
 if decision_text not in allowed_decisions:
     raise ValueError(
@@ -119,17 +119,39 @@ decision_record = {
     "timestamp_utc": datetime.now(timezone.utc).isoformat(),
 }
 
-with open("decision.json", "w", encoding="utf-8") as f:
-    json.dump(decision_record, f, indent=2)
+with open(
+    "decision.json",
+    "w",
+    encoding="utf-8"
+) as f:
+    json.dump(
+        decision_record,
+        f,
+        indent=2
+    )
 
+
+# ============================================================
+# DISPLAY DECISION FILE
+# ============================================================
 
 print("\n" + "=" * 70)
 print("📄 DECISION FILE CREATED")
 print("=" * 70)
 
-print(json.dumps(decision_record, indent=2))
+print(
+    json.dumps(
+        decision_record,
+        indent=2
+    )
+)
 
 print("\nDecision saved to: decision.json")
+
+
+# ============================================================
+# COMPLETED
+# ============================================================
 
 print("\n" + "=" * 70)
 print("✅ ANALYSIS COMPLETED")
